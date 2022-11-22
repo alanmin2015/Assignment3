@@ -34,19 +34,27 @@ namespace Assignment3.Controllers
         /// A list of teachers (first names and last names)
         /// </returns>
         [HttpGet]
-        [Route("api/teacherdata/listteachers/{SearchKey}")]
-        public IEnumerable<Teacher> ListTeachers(string SearchKey)
+        [Route("api/teacherdata/listteachers/{SearchKey}/{SearchKey2}/{SearchKey3}")]
+        public IEnumerable<Teacher> ListTeachers(string SearchKey, string SearchKey2, string SearchKey3)
         {
             //Create an instance of a connection
             MySqlConnection Conn = Blog.AccessDatabase();
-
+           
             //Open the connection between the web server and database
             Conn.Open();
-
-            Debug.WriteLine("The search key is " + SearchKey);
-
-            string query = "select teachers.*, classes.classname from Teachers JOIN classes ON teachers.teacherid=classes.teacherid where teacherfname like '%" + SearchKey+"%'";
-            Debug.WriteLine("The query is "+query);
+            string query = "select teachers.*, classes.classname from Teachers LEFT JOIN classes ON teachers.teacherid=classes.teacherid where teacherfname like '%" + SearchKey + "%'";
+            //Debug.WriteLine("The search key is " + SearchKey);
+           
+            if (SearchKey2 != null)
+            { query = "select teachers.*, classes.classname from Teachers LEFT JOIN classes ON teachers.teacherid=classes.teacherid where hiredate like '%" + SearchKey2 + "%'";
+                Debug.WriteLine("The query is " + query);
+            }
+            else if(SearchKey3 != null)
+                    { query = "select teachers.*, classes.classname from Teachers LEFT JOIN classes ON teachers.teacherid=classes.teacherid where salary like '%" + SearchKey3 + "%'";
+                Debug.WriteLine("The query is " + query);
+            }
+            //string query = "select * from Teachers  where teacherfname like '%" + SearchKey + "%'";
+            //Debug.WriteLine("The query is "+query);
             //Establish a new command (query) for our database
             MySqlCommand cmd = Conn.CreateCommand();
 
@@ -142,6 +150,48 @@ namespace Assignment3.Controllers
 
 
             return NewTeacher;
+        }
+        [HttpPost]
+        public void AddTeacher([FromBody]Teacher NewTeacher)
+        {
+           string query= "INSERT INTO TEACHERS (teacherfname, teacherlname) VALUES (@fname,@lname)";
+            MySqlConnection Conn = Blog.AccessDatabase();
+
+       
+            Conn.Open();
+            MySqlCommand cmd = Conn.CreateCommand();
+
+            cmd.CommandText = query;
+            cmd.Parameters.AddWithValue("@fname", NewTeacher.TeacherFname);
+            cmd.Parameters.AddWithValue("@lname", NewTeacher.TeacherLname);
+
+            Debug.WriteLine("Trying to create a teacher with title " + NewTeacher.TeacherLname);
+
+            cmd.ExecuteNonQuery(); 
+            Conn.Close();
+
+        }
+
+        [HttpPost]
+        [Route("api/teacherdata/deleteteacher/{TeacherId}")]
+        public void DeleteTeacher(int TeacherId)
+        {
+          
+            MySqlConnection Conn = Blog.AccessDatabase();
+
+            //Open the connection between the web server and database
+            Conn.Open();
+            MySqlCommand cmd = Conn.CreateCommand();
+
+            //SQL QUERY
+            string query = "delete from teachers where teacherid=@id";
+            cmd.CommandText = query;
+            cmd.Parameters.AddWithValue("@id", TeacherId);
+            cmd.Prepare();
+
+            cmd.ExecuteNonQuery();
+            Conn.Close();
+
         }
     }
 }

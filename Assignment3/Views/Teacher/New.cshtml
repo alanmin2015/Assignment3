@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "New";
+}
+
+
+<div id="containershow">
+    <nav>
+        <a class="navlink" href="/Teacher/List">Back To Teachers</a>
+    </nav>
+    <h2>New Teacher</h2>
+    <form name="ixdForm" method="POST" action="/Teacher/Create">
+        <div class="inputrow">
+            <label for="TeacherFname">First Name:</label>
+            <input type="text" id="TeacherFname" name="TeacherFname" />
+
+        </div>
+        <div class="inputrow">
+            <label for="TeacherLname">Last Name:</label>
+            <input type="text" id="TeacherLname" name="TeacherLname" />
+
+        </div>
+
+        <div class="inputrow">
+            <input type="submit" value="Create Teacher" />
+        </div>
+    </form>
+    <script>
+       
+        window.onload = function () {
+            var formHandle = document.forms.ixdForm;
+            formHandle.onsubmit = checkForm;
+            function checkForm() {
+                var fname = formHandle.TeacherFname;
+                var lname = formHandle.TeacherLname;
+
+                //Normal Validation
+                if (fname.value === "") {
+                    fname.style.background = "red";
+                    return false
+                    fname.focus();
+                }
+                else if (fname.value != "") {
+                    fname.style.background = "white";
+                    fname.blur();
+                    console.log(2);
+                }
+
+                if (lname.value === "") {
+                    lname.style.background = "red";
+                    return false
+                    lname.focus();
+                }
+                else {
+                    lname.style.background = "white";
+                    lname.blur();
+                    console.log(2);
+                }
+            }
+        }
+    </script>
+</div>
