@@ -52,7 +52,7 @@ namespace Assignment3.Controllers
 
         // POST: /Teacher/Create
         [HttpPost]
-        public ActionResult Create(string TeacherFname, string TeacherLname)
+        public ActionResult Create(string TeacherFname, string TeacherLname, string Employeenumber, string Hiredate, string Salary)
         {
             TeacherDataController MyController = new TeacherDataController();
 
@@ -60,6 +60,9 @@ namespace Assignment3.Controllers
 
             NewTeacher.TeacherFname = TeacherFname;
             NewTeacher.TeacherLname = TeacherLname;
+            NewTeacher.Employeenumber = Employeenumber;
+            NewTeacher.Hiredate = Hiredate;
+            NewTeacher.Salary = Salary;
 
             MyController.AddTeacher(NewTeacher);
             
@@ -86,6 +89,55 @@ namespace Assignment3.Controllers
 
 
             return View(NewTeacher);
+        }
+
+        //GET: /Teacher/Edit/{id}
+        [HttpGet]
+
+        public ActionResult Update(int id)
+        {
+            TeacherDataController MyController = new TeacherDataController();
+            Teacher SelectedTeacher= MyController.FindTeacher(id);
+            //Views/Teacher/Edit.cshtml
+            return View(SelectedTeacher);
+        }
+
+        [HttpGet]
+
+        public ActionResult Validation (int id)
+        {
+            TeacherDataController MyController = new TeacherDataController();
+            Teacher Validation = MyController.FindTeacher(id);
+            //Views/Teacher/Edit.cshtml
+            return View(Validation);
+        }
+
+        //POST: /Teacher/Update/{id}
+        [HttpPost]
+        public ActionResult Update(int id, string TeacherFname, string TeacherLname, string Employeenumber, string Hiredate, string Salary)
+        {
+            Debug.WriteLine("Trying to update an teacher");
+            Debug.WriteLine("id");
+            Debug.WriteLine("TeacherFname");
+            Teacher UpdatedTeacher=new Teacher();
+
+            TeacherDataController MyController = new TeacherDataController();
+            Teacher Validation = MyController.FindTeacher(id);
+
+            UpdatedTeacher.TeacherFname = TeacherFname;
+            UpdatedTeacher.TeacherLname = TeacherLname;
+            UpdatedTeacher.Employeenumber = Employeenumber;
+            UpdatedTeacher.Hiredate = Hiredate;
+            UpdatedTeacher.Salary = Salary;
+            // server side validation
+            if (string.IsNullOrEmpty(TeacherFname) || string.IsNullOrEmpty(TeacherLname) || string.IsNullOrEmpty(Employeenumber) ||  string.IsNullOrEmpty(Hiredate) || string.IsNullOrEmpty(Salary))
+            {
+                Debug.WriteLine("Validation Failed");
+                return View("Validation");
+            }
+      
+            MyController.UpdateTeacher(id, UpdatedTeacher);
+            return RedirectToAction("list");
         }
     }
 }

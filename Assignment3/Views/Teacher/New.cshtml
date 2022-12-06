@@ -12,12 +12,26 @@
         <div class="inputrow">
             <label for="TeacherFname">First Name:</label>
             <input type="text" id="TeacherFname" name="TeacherFname" />
-
         </div>
+
         <div class="inputrow">
             <label for="TeacherLname">Last Name:</label>
             <input type="text" id="TeacherLname" name="TeacherLname" />
+        </div>
 
+        <div class="inputrow">
+            <label for="Employeenumber">Employee Number:</label>
+            <input type="text" id="Employeenumber" name="Employeenumber" />
+        </div>
+
+        <div class="inputrow">
+            <label for="Hiredate">Hire Date:</label>
+            <input type="text" id="Hiredate" name="Hiredate" />
+        </div>
+
+        <div class="inputrow">
+            <label for="Salary">Salary:</label>
+            <input type="text" id="Salary" name="Salary" />
         </div>
 
         <div class="inputrow">
@@ -32,7 +46,9 @@
             function checkForm() {
                 var fname = formHandle.TeacherFname;
                 var lname = formHandle.TeacherLname;
-
+                var number = formHandle.Employeenumber;
+                var date = formHandle.Hiredate;
+                var salary = formHandle.Salary;
                 //Normal Validation
                 if (fname.value === "") {
                     fname.style.background = "red";
@@ -54,6 +70,35 @@
                     lname.style.background = "white";
                     lname.blur();
                     console.log(2);
+                }
+                if (number.value === "") {
+                    number.style.background = "red";
+                    return false
+                    number.focus();
+                }
+                else {
+                    number.style.background = "white";
+                    number.blur();
+                }
+
+                if (date.value === "") {
+                    date.style.background = "red";
+                    return false
+                    date.focus();
+                }
+                else {
+                    date.style.background = "white";
+                    date.blur();
+                }
+
+                if (salary.value === "") {
+                    salary.style.background = "red";
+                    return false
+                    salary.focus();
+                }
+                else {
+                    salary.style.background = "white";
+                    salary.blur();
                 }
             }
         }

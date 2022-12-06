@@ -154,7 +154,7 @@ namespace Assignment3.Controllers
         [HttpPost]
         public void AddTeacher([FromBody]Teacher NewTeacher)
         {
-           string query= "INSERT INTO TEACHERS (teacherfname, teacherlname) VALUES (@fname,@lname)";
+           string query= "INSERT INTO TEACHERS (teacherfname, teacherlname,employeenumber,hiredate,salary) VALUES (@fname,@lname,@number, @date,@salary)";
             MySqlConnection Conn = Blog.AccessDatabase();
 
        
@@ -164,6 +164,9 @@ namespace Assignment3.Controllers
             cmd.CommandText = query;
             cmd.Parameters.AddWithValue("@fname", NewTeacher.TeacherFname);
             cmd.Parameters.AddWithValue("@lname", NewTeacher.TeacherLname);
+            cmd.Parameters.AddWithValue("@number", NewTeacher.Employeenumber);
+            cmd.Parameters.AddWithValue("@date", NewTeacher.Hiredate);
+            cmd.Parameters.AddWithValue("@salary", NewTeacher.Salary);
 
             Debug.WriteLine("Trying to create a teacher with title " + NewTeacher.TeacherLname);
 
@@ -193,5 +196,44 @@ namespace Assignment3.Controllers
             Conn.Close();
 
         }
+        /// <summary>
+        /// Updates the teacher in the system
+        /// <param name="TeacherId"></param>
+        /// <param name="TeacherfName"></param>
+        /// <param name="TeacherLname"></param>
+        /// </summary>
+        /// <example>
+        /// POST: /api/teacherdata/updateteacher
+        /// REQUEST BODY/POST DATA
+        /// {""}
+        /// </example>
+        /// 
+        [HttpPost]
+        [Route("api/teacherdata/updateteacher/{TeacherId}")]
+        public void UpdateTeacher(int TeacherId, [FromBody]Teacher UpdatedTeacher)
+        {
+            Debug.WriteLine("Teacher id is " + TeacherId);
+            Debug.WriteLine("Teacher first name is " + UpdatedTeacher.TeacherFname);
+            Debug.WriteLine("Teacher first name is " + UpdatedTeacher.TeacherLname);
+
+            //update the teacher
+            string query = "update teachers set teacherfname=@fname, teacherlname=@lname, employeenumber=@number, hiredate=@date, salary=@salary  where teacherid=@id";
+            MySqlConnection Conn=Blog.AccessDatabase();
+            Conn.Open();
+            MySqlCommand cmd = Conn.CreateCommand();
+            cmd.CommandText=query;
+            cmd.Parameters.AddWithValue("@fname", UpdatedTeacher.TeacherFname);
+            cmd.Parameters.AddWithValue("@lname", UpdatedTeacher.TeacherLname);
+            cmd.Parameters.AddWithValue("@id", TeacherId);
+            cmd.Parameters.AddWithValue("@number", UpdatedTeacher.Employeenumber);
+            cmd.Parameters.AddWithValue("@date", UpdatedTeacher.Hiredate);
+            cmd.Parameters.AddWithValue("@salary", UpdatedTeacher.Salary);
+
+            cmd.ExecuteNonQuery();
+            Conn.Close();
+        }
+
+        
+
     }
 }

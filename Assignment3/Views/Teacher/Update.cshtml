@@ -1,0 +1,99 @@
+﻿@model Assignment3.Models.Teacher
+@{
+    ViewBag.Title = "Update";
+}
+
+<h2>Update Teacher</h2>
+
+<form name="updateForm" method="POST" action="/Teacher/Update/@Model.TeacherId">
+
+    <div>
+        <label for="TeacherFname">Teacher`s First Name</label>
+        <input type="text" name="TeacherFname" value="@Model.TeacherFname" />
+    </div>
+
+    <div>
+        <label>Last Name</label>
+        <input type="text" name="TeacherLname" value="@Model.TeacherLname" />
+    </div>
+
+    <div>
+        <label>Employee Number</label>
+        <input type="text" name="Employeenumber" value="@Model.Employeenumber" />
+    </div>
+
+    <div>
+        <label>Hire Date</label>
+        <input type="text" name="Hiredate" value="@Model.Hiredate" />
+    </div>
+
+    <div>
+        <label>Salary</label>
+        <input type="text" name="Salary" value="@Model.Salary" />
+    </div>
+
+    <div>
+        <input type="submit" value="Update" />
+    </div>
+
+   
+                
+    <script>
+        //Client side Validation
+        window.onload = function () {
+            var formHandle = document.forms.updateForm;
+            formHandle.onsubmit = checkForm;
+            function checkForm() {
+                var fname = formHandle.TeacherFname;
+                var lname = formHandle.TeacherLname;
+                var number = formHandle.Employeenumber;
+                var date = formHandle.Hiredate;
+                var salary = formHandle.Salary;
+
+             
+
+                if (lname.value === "") {
+                    lname.style.background = "red";
+                    return false
+                    lname.focus();
+                }
+                else {
+                    lname.style.background = "white";
+                    lname.blur();
+                 
+                }
+
+                if (number.value === "") {
+                    number.style.background = "red";
+                    return false
+                    number.focus();
+                }
+                else {
+                    number.style.background = "white";
+                    number.blur();
+                }
+
+                if (date.value === "") {
+                    date.style.background = "red";
+                    return false
+                    date.focus();
+                }
+                else {
+                    date.style.background = "white";
+                    date.blur();
+                }
+
+                if (salary.value === "") {
+                    salary.style.background = "red";
+                    return false
+                    salary.focus();
+                }
+                else {
+                    salary.style.background = "white";
+                    salary.blur();
+                }
+
+            }
+        }
+    </script>
+</form>
